@@ -5,7 +5,7 @@ import Badge from "./badge";
 import Notifications from "./notifications";
 import Timeline from "../utils/timeline";
 import {
-  getMillisecondsToMinutesAndSeconds,
+  getMillisecondsToHoursAndMinutesAndSeconds,
   getSecondsInMilliseconds,
   getTimerTypeMilliseconds,
 } from "../utils/utils";
@@ -64,16 +64,21 @@ export default class Timer {
             this.timeline.addAlarmToTimeline(timer.type, timer.totalTime);
             this.resetTimer();
           } else {
-            const minutesLeft = getMillisecondsToMinutesAndSeconds(
-              timeLeft
+            const hoursLeft = getMillisecondsToHoursAndMinutesAndSeconds(
+                timeLeft
+            ).hours.toString();
+            const minutesLeft = getMillisecondsToHoursAndMinutesAndSeconds(
+                timeLeft
             ).minutes.toString();
-            const secondsLeft = getMillisecondsToMinutesAndSeconds(timeLeft)
-              .seconds;
+            const secondsLeft = getMillisecondsToHoursAndMinutesAndSeconds(timeLeft)
+                .seconds;
 
-            if (this.badge.getBadgeText() !== minutesLeft) {
-              if (minutesLeft === "0" && secondsLeft < 60)
-                this.badge.setBadgeText("<1", badgeBackgroundColor);
-              else this.badge.setBadgeText(minutesLeft, badgeBackgroundColor);
+            if (hoursLeft !== '0' && this.badge.getBadgeText() !== `${hoursLeft}h`) {
+              this.badge.setBadgeText(`${hoursLeft}h`, badgeBackgroundColor);
+            } else if (hoursLeft === '0' && minutesLeft !== '0' && this.badge.getBadgeText() !== `${minutesLeft}m`) {
+              this.badge.setBadgeText(`${minutesLeft}m`, badgeBackgroundColor);
+            } else if (hoursLeft === '0' && minutesLeft === '0' && secondsLeft < 60) {
+              this.badge.setBadgeText("<1m", badgeBackgroundColor);
             }
           }
         }, getSecondsInMilliseconds(1)),
@@ -82,8 +87,15 @@ export default class Timer {
         type,
       };
 
-      const { minutes } = getMillisecondsToMinutesAndSeconds(milliseconds);
-      this.badge.setBadgeText(minutes.toString(), badgeBackgroundColor);
+      const { hours, minutes, seconds } = getMillisecondsToHoursAndMinutesAndSeconds(milliseconds);
+
+      if (hours !== 0 && this.badge.getBadgeText() !== `${hours}h`) {
+        this.badge.setBadgeText(`${hours}h`, badgeBackgroundColor);
+      } else if (hours === 0 && minutes !== 0 && this.badge.getBadgeText() !== `${minutes}m`) {
+        this.badge.setBadgeText(`${minutes}m`, badgeBackgroundColor);
+      } else if (hours === 0 && minutes === 0 && seconds < 60) {
+        this.badge.setBadgeText("<1m", badgeBackgroundColor);
+      }
     });
   }
 

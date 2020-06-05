@@ -47,6 +47,21 @@ export default class Timer {
     this.badge.setBadgeText("");
   }
 
+  resetTimerToRing() {
+    if (this.timer.interval) {
+      clearInterval(this.timer.interval);
+    }
+
+    this.timer = {
+      interval: null,
+      scheduledTime: null,
+      totalTime: 0,
+      type: TIMER_TYPE.RINGING,
+    };
+
+    this.badge.setBadgeText("RING", BADGE_BACKGROUND_COLOR_BY_TIMER_TYPE[TIMER_TYPE.RINGING]);
+  }
+
   setTimer(type) {
     this.resetTimer();
     const badgeBackgroundColor = BADGE_BACKGROUND_COLOR_BY_TIMER_TYPE[type];
@@ -62,7 +77,7 @@ export default class Timer {
           if (timeLeft <= 0) {
             this.notifications.createBrowserNotification(timer.type);
             this.timeline.addAlarmToTimeline(timer.type, timer.totalTime);
-            this.resetTimer();
+            this.resetTimerToRing();
           } else {
             const hoursLeft = getMillisecondsToHoursAndMinutesAndSeconds(
                 timeLeft
@@ -103,6 +118,10 @@ export default class Timer {
     return this.timer.scheduledTime;
   }
 
+  getTimerType() {
+    return this.timer.type;
+  }
+
   setListeners() {
     browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
       switch (request.action) {
@@ -119,6 +138,16 @@ export default class Timer {
             sendResponse(this.getTimerScheduledTime());
           }
           return this.getTimerScheduledTime();
+        case RUNTIME_ACTION.GET_TIMER_TYPE:
+          // Hack because of difference in chrome and firefox
+          // Check if polyfill fixes the issue
+          if (sendResponse) {
+            sendResponse(this.getTimerType());
+          }
+          return this.getTimerType();
+        case RUNTIME_ACTION.STOP_NOTIFICATION_SOUND:
+          this.notifications.stopNotificationSound();
+          break;
         default:
           break;
       }

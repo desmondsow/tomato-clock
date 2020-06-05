@@ -3,10 +3,10 @@ import browser from "webextension-polyfill";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./panel.css";
 
-import { RUNTIME_ACTION, TIMER_TYPE } from "../utils/constants";
+import {BADGE_BACKGROUND_COLOR_BY_TIMER_TYPE, RUNTIME_ACTION, TIMER_TYPE} from "../utils/constants";
 import {
   getMillisecondsToTimeText,
-  getSecondsInMilliseconds,
+  getSecondsInMilliseconds, getTimerStatusText,
   getTimerTypeMilliseconds,
 } from "../utils/utils";
 import Settings from "../utils/settings";
@@ -15,17 +15,34 @@ export default class Panel {
   constructor() {
     this.settings = new Settings();
     this.currentTimeText = document.getElementById("current-time-text");
+    this.currentTimerStatus = document.getElementById("current-timer-status");
+
     this.timer = {};
 
     browser.runtime
-      .sendMessage({
-        action: RUNTIME_ACTION.GET_TIMER_SCHEDULED_TIME,
-      })
-      .then((scheduledTime) => {
-        if (scheduledTime) {
-          this.setDisplayTimer(scheduledTime - Date.now());
+        .sendMessage({
+          action: RUNTIME_ACTION.GET_TIMER_TYPE,
+        })
+        .then((type) => {
+          if (type) {
+            return Promise.all([type,
+              browser.runtime
+                  .sendMessage({
+                    action: RUNTIME_ACTION.GET_TIMER_SCHEDULED_TIME,
+                  })
+            ]);
+          }
+        }).then((results) => {
+      if (results !== undefined) {
+        if (results.length === 2) {
+          this.setDisplayTimer(results[0], results[1] - Date.now());
+        } else if (results.length === 1) {
+          this.setDisplayTimer(results[0], null);
+        } else {
+          this.setDisplayTimer(null, null);
         }
-      });
+      }
+    });
 
     this.setEventListeners();
   }
@@ -71,6 +88,7 @@ export default class Panel {
     };
 
     this.setCurrentTimeText(0);
+    this.setCurrentTimerStatus("")
   }
 
   getTimer() {
@@ -80,13 +98,14 @@ export default class Panel {
   setTimer(type) {
     this.settings.getSettings().then((settings) => {
       const milliseconds = getTimerTypeMilliseconds(type, settings);
-      this.setDisplayTimer(milliseconds);
+      this.setDisplayTimer(type, milliseconds);
     });
   }
 
-  setDisplayTimer(milliseconds) {
+  setDisplayTimer(type, milliseconds) {
     this.resetTimer();
     this.setCurrentTimeText(milliseconds);
+    this.setCurrentTimerStatus(type);
 
     this.timer = {
       interval: setInterval(() => {
@@ -94,6 +113,7 @@ export default class Panel {
 
         timer.timeLeft -= getSecondsInMilliseconds(1);
         this.setCurrentTimeText(timer.timeLeft);
+        this.setCurrentTimerStatus(type);
 
         if (timer.timeLeft <= 0) {
           this.resetTimer();
@@ -101,6 +121,11 @@ export default class Panel {
       }, getSecondsInMilliseconds(1)),
       timeLeft: milliseconds,
     };
+  }
+
+  setCurrentTimerStatus(type) {
+    this.currentTimerStatus.textContent = getTimerStatusText(type);
+    this.currentTimerStatus.style.color = BADGE_BACKGROUND_COLOR_BY_TIMER_TYPE[type] === undefined ? "black" : BADGE_BACKGROUND_COLOR_BY_TIMER_TYPE[type];
   }
 
   setCurrentTimeText(milliseconds) {

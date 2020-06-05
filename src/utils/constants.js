@@ -27,6 +27,14 @@ export const TIMER_TYPE = {
   LONG_BREAK: "longBreak",
 };
 
+export const TIMER_STATUS_TEXT = {
+  TOMATO: "Tomatoing",
+  SHORT_BREAK: "Short Breaking",
+  LONG_BREAK: "Long Breaking",
+  RINGING: "Ringing",
+  DEFAULT: "Tomato Clock",
+};
+
 export const BADGE_BACKGROUND_COLOR_BY_TIMER_TYPE = {
   [TIMER_TYPE.TOMATO]: "#dc3545",
   [TIMER_TYPE.SHORT_BREAK]: "#666",

@@ -1,4 +1,4 @@
-import { DATE_UNIT, MONTH_NAMES, TIMER_TYPE } from "./constants";
+import {DATE_UNIT, MONTH_NAMES, TIMER_STATUS_TEXT, TIMER_TYPE} from "./constants";
 
 export function getSecondsInMilliseconds(seconds) {
   return seconds * 1000;
@@ -69,6 +69,21 @@ export function getDateRangeStringArray(startDate, endDate, dateUnit) {
   }
 
   return dateStringArray;
+}
+
+export function getTimerStatusText(type) {
+  switch (type) {
+    case TIMER_TYPE.TOMATO:
+      return TIMER_STATUS_TEXT.TOMATO;
+    case TIMER_TYPE.SHORT_BREAK:
+      return TIMER_STATUS_TEXT.SHORT_BREAK;
+    case TIMER_TYPE.LONG_BREAK:
+      return TIMER_STATUS_TEXT.LONG_BREAK;
+    case TIMER_TYPE.RINGING:
+      return TIMER_STATUS_TEXT.RINGING;
+    default:
+      return TIMER_STATUS_TEXT.DEFAULT;
+  }
 }
 
 export function getTimerTypeMilliseconds(type, settings) {

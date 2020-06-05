@@ -17,7 +17,13 @@ export default class Panel {
     this.currentTimeText = document.getElementById("current-time-text");
     this.currentTimerStatus = document.getElementById("current-timer-status");
 
+    this.tomatoButton = document.getElementById("tomato-button");
+    this.shortBreakButton = document.getElementById("short-break-button");
+    this.longBreakButton = document.getElementById("long-break-button");
+    this.resetButton = document.getElementById("reset-button");
     this.dismissButton = document.getElementById("dismiss-button");
+
+    this.statsLink = document.getElementById("stats-link");
 
     this.timer = {};
 
@@ -51,26 +57,22 @@ export default class Panel {
   }
 
   setEventListeners() {
-    document.getElementById("tomato-button").addEventListener("click", () => {
+    this.tomatoButton.addEventListener("click", () => {
       this.setTimer(TIMER_TYPE.TOMATO);
       this.setBackgroundTimer(TIMER_TYPE.TOMATO);
     });
 
-    document
-      .getElementById("short-break-button")
-      .addEventListener("click", () => {
+    this.shortBreakButton.addEventListener("click", () => {
         this.setTimer(TIMER_TYPE.SHORT_BREAK);
         this.setBackgroundTimer(TIMER_TYPE.SHORT_BREAK);
       });
 
-    document
-      .getElementById("long-break-button")
-      .addEventListener("click", () => {
+    this.longBreakButton.addEventListener("click", () => {
         this.setTimer(TIMER_TYPE.LONG_BREAK);
         this.setBackgroundTimer(TIMER_TYPE.LONG_BREAK);
       });
 
-    document.getElementById("reset-button").addEventListener("click", () => {
+    this.resetButton.addEventListener("click", () => {
       this.resetTimer();
       this.resetBackgroundTimer();
     });
@@ -98,6 +100,8 @@ export default class Panel {
 
     this.setCurrentTimeText(0);
     this.setCurrentTimerStatus("")
+    this.enableControls();
+
   }
 
   resetTimerToRing() {
@@ -109,14 +113,15 @@ export default class Panel {
       interval: setInterval(() => {
         this.setCurrentTimerStatus(TIMER_TYPE.RINGING)
         this.showDismissButton();
+        this.disableControlsExceptDismiss()
       }, getSecondsInMilliseconds(1)),
       timeLeft: 0,
     };
 
     this.setCurrentTimerStatus(TIMER_TYPE.RINGING)
     this.showDismissButton();
+    this.disableControlsExceptDismiss()
   }
-
 
   getTimer() {
     return this.timer;
@@ -133,6 +138,7 @@ export default class Panel {
     if (type === TIMER_TYPE.RINGING) {
       this.setCurrentTimerStatus(type)
       this.showDismissButton();
+      this.disableControlsExceptDismiss()
       this.resetTimerToRing();
     } else {
       this.resetTimer();
@@ -167,6 +173,20 @@ export default class Panel {
 
   showDismissButton() {
     this.dismissButton.style.display = "block"
+  }
+
+  enableControls() {
+    this.tomatoButton.removeAttribute("disabled")
+    this.shortBreakButton.removeAttribute("disabled")
+    this.longBreakButton.removeAttribute("disabled")
+    this.resetButton.removeAttribute("disabled")
+  }
+
+  disableControlsExceptDismiss() {
+    this.tomatoButton.setAttribute("disabled", "disabled")
+    this.shortBreakButton.setAttribute("disabled", "disabled")
+    this.longBreakButton.setAttribute("disabled", "disabled")
+    this.resetButton.setAttribute("disabled", "disabled")
   }
 
   resetBackgroundTimer() {

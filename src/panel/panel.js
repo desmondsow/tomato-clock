@@ -17,6 +17,8 @@ export default class Panel {
     this.currentTimeText = document.getElementById("current-time-text");
     this.currentTimerStatus = document.getElementById("current-timer-status");
 
+    this.dismissButton = document.getElementById("dismiss-button");
+
     this.timer = {};
 
     browser.runtime
@@ -34,6 +36,7 @@ export default class Panel {
           }
         }).then((results) => {
       if (results !== undefined) {
+        console.log(results[0]);
         if (results.length === 2) {
           this.setDisplayTimer(results[0], results[1] - Date.now());
         } else if (results.length === 1) {
@@ -72,6 +75,12 @@ export default class Panel {
       this.resetBackgroundTimer();
     });
 
+    this.dismissButton.addEventListener("click", () => {
+      this.resetTimer();
+      this.resetBackgroundTimer();
+      this.stopNotificationSound();
+    });
+
     document.getElementById("stats-link").addEventListener("click", () => {
       browser.tabs.create({ url: "/stats/stats.html" });
     });
@@ -91,6 +100,24 @@ export default class Panel {
     this.setCurrentTimerStatus("")
   }
 
+  resetTimerToRing() {
+    if (this.timer.interval) {
+      clearInterval(this.timer.interval);
+    }
+
+    this.timer = {
+      interval: setInterval(() => {
+        this.setCurrentTimerStatus(TIMER_TYPE.RINGING)
+        this.showDismissButton();
+      }, getSecondsInMilliseconds(1)),
+      timeLeft: 0,
+    };
+
+    this.setCurrentTimerStatus(TIMER_TYPE.RINGING)
+    this.showDismissButton();
+  }
+
+
   getTimer() {
     return this.timer;
   }
@@ -103,24 +130,30 @@ export default class Panel {
   }
 
   setDisplayTimer(type, milliseconds) {
-    this.resetTimer();
-    this.setCurrentTimeText(milliseconds);
-    this.setCurrentTimerStatus(type);
+    if (type === TIMER_TYPE.RINGING) {
+      this.setCurrentTimerStatus(type)
+      this.showDismissButton();
+      this.resetTimerToRing();
+    } else {
+      this.resetTimer();
+      this.setCurrentTimeText(milliseconds);
+      this.setCurrentTimerStatus(type)
 
-    this.timer = {
-      interval: setInterval(() => {
-        const timer = this.getTimer();
+      this.timer = {
+        interval: setInterval(() => {
+          const timer = this.getTimer();
 
-        timer.timeLeft -= getSecondsInMilliseconds(1);
-        this.setCurrentTimeText(timer.timeLeft);
-        this.setCurrentTimerStatus(type);
+          timer.timeLeft -= getSecondsInMilliseconds(1);
+          this.setCurrentTimeText(timer.timeLeft);
+          this.setCurrentTimerStatus(type);
 
-        if (timer.timeLeft <= 0) {
-          this.resetTimer();
-        }
-      }, getSecondsInMilliseconds(1)),
-      timeLeft: milliseconds,
-    };
+          if (timer.timeLeft <= 0) {
+            this.resetTimerToRing();
+          }
+        }, getSecondsInMilliseconds(1)),
+        timeLeft: milliseconds,
+      };
+    }
   }
 
   setCurrentTimerStatus(type) {
@@ -130,6 +163,10 @@ export default class Panel {
 
   setCurrentTimeText(milliseconds) {
     this.currentTimeText.textContent = getMillisecondsToTimeText(milliseconds);
+  }
+
+  showDismissButton() {
+    this.dismissButton.style.display = "block"
   }
 
   resetBackgroundTimer() {
@@ -146,6 +183,13 @@ export default class Panel {
       },
     });
   }
+
+  stopNotificationSound() {
+    browser.runtime.sendMessage({
+      action: RUNTIME_ACTION.STOP_NOTIFICATION_SOUND,
+    });
+  }
+
 }
 
 document.addEventListener("DOMContentLoaded", () => {

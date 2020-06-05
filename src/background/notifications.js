@@ -40,9 +40,17 @@ export default class Notifications {
 
     this.settings.getSettings().then((settings) => {
       if (settings.isNotificationSoundEnabled) {
-        this.notificationSound.play();
+        this.playNotificationSound()
       }
     });
+  }
+
+  playNotificationSound() {
+    this.notificationSound.play()
+  }
+
+  stopNotificationSound() {
+    this.notificationSound.pause()
   }
 
   setListeners() {

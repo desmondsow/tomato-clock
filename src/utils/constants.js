@@ -25,6 +25,7 @@ export const TIMER_TYPE = {
   TOMATO: "tomato",
   SHORT_BREAK: "shortBreak",
   LONG_BREAK: "longBreak",
+  RINGING: "ringing",
 };
 
 export const TIMER_STATUS_TEXT = {
@@ -39,12 +40,15 @@ export const BADGE_BACKGROUND_COLOR_BY_TIMER_TYPE = {
   [TIMER_TYPE.TOMATO]: "#dc3545",
   [TIMER_TYPE.SHORT_BREAK]: "#666",
   [TIMER_TYPE.LONG_BREAK]: "#666",
+  [TIMER_TYPE.RINGING]: "#17a2b8",
 };
 
 export const RUNTIME_ACTION = {
   SET_TIMER: "setTimer",
   RESET_TIMER: "resetTimer",
   GET_TIMER_SCHEDULED_TIME: "getTimerScheduledTime",
+  GET_TIMER_TYPE: "getTimerType",
+  STOP_NOTIFICATION_SOUND: "stopNotificationSound",
 };
 
 export const DATE_UNIT = {

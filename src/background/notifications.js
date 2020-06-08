@@ -18,13 +18,13 @@ export default class Notifications {
 
     switch (timerType) {
       case TIMER_TYPE.TOMATO:
-        message = "Your Tomato timer is done!";
+        message = "Your Tomato timer is done! It is time to take a short break.";
         break;
       case TIMER_TYPE.SHORT_BREAK:
-        message = "Your short break is done!";
+        message = "Your short break is done! It is time to work.";
         break;
       case TIMER_TYPE.LONG_BREAK:
-        message = "Your long break is done!";
+        message = "Your long break is done! It is time to work.";
         break;
       default:
         message = "Your timer is done!";

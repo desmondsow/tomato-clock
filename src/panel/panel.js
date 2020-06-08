@@ -3,7 +3,7 @@ import browser from "webextension-polyfill";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./panel.css";
 
-import {BADGE_BACKGROUND_COLOR_BY_TIMER_TYPE, RUNTIME_ACTION, TIMER_TYPE} from "../utils/constants";
+import {BADGE_BACKGROUND_COLOR_BY_TIMER_TYPE, NOTIFICATION_ID, RUNTIME_ACTION, TIMER_TYPE} from "../utils/constants";
 import {
   getMillisecondsToTimeText,
   getSecondsInMilliseconds, getTimerStatusText,
@@ -81,6 +81,7 @@ export default class Panel {
       this.resetTimer();
       this.resetBackgroundTimer();
       this.stopNotificationSound();
+      this.clearNotification();
     });
 
     document.getElementById("stats-link").addEventListener("click", () => {
@@ -187,6 +188,10 @@ export default class Panel {
     this.shortBreakButton.setAttribute("disabled", "disabled")
     this.longBreakButton.setAttribute("disabled", "disabled")
     this.resetButton.setAttribute("disabled", "disabled")
+  }
+
+  clearNotification() {
+    browser.notifications.clear(NOTIFICATION_ID);
   }
 
   resetBackgroundTimer() {

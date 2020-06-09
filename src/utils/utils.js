@@ -15,6 +15,14 @@ export function getMillisecondsToHoursAndMinutesAndSeconds(milliseconds) {
   };
 }
 
+export function getHoursAndMinutesAndSecondsToMilliseconds(hours, minutes, seconds) {
+  let milliseconds = hours * 1000 * 60 * 60;
+  milliseconds += minutes * 1000 * 60;
+  milliseconds += seconds * 1000;
+
+  return milliseconds
+}
+
 export function getMillisecondsToTimeText(milliseconds) {
   const hours = parseInt((milliseconds / (1000 * 60 * 60)) % 60);
   const minutes = parseInt((milliseconds / (1000 * 60)) % 60);
@@ -89,11 +97,11 @@ export function getTimerStatusText(type) {
 export function getTimerTypeMilliseconds(type, settings) {
   switch (type) {
     case TIMER_TYPE.TOMATO:
-      return getMinutesInMilliseconds(settings.minutesInTomato);
+      return settings.millisecondsInTomato;
     case TIMER_TYPE.SHORT_BREAK:
-      return getMinutesInMilliseconds(settings.minutesInShortBreak);
+      return settings.millisecondsInShortBreak;
     case TIMER_TYPE.LONG_BREAK:
-      return getMinutesInMilliseconds(settings.minutesInLongBreak);
+      return settings.millisecondsInLongBreak;
     default:
       return;
   }

@@ -1,56 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Options - Tomato Clock</title>
-  </head>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Options - Tomato Clock</title>
+</head>
 
-  <body>
-    <form id="options-form">
-      <div class="form-group">
-        <label for="minutes-in-tomato" class="control-label">
-          Minutes in Tomato
-        </label>
-        <input type="number" class="form-control" id="minutes-in-tomato" />
-      </div>
-      <div class="form-group">
-        <label for="minutes-in-short-break" class="control-label">
-          Minutes in Short Break
-        </label>
-        <input type="number" class="form-control" id="minutes-in-short-break" />
-      </div>
-      <div class="form-group">
-        <label for="minutes-in-long-break" class="control-label">
-          Minutes in Long Break
-        </label>
-        <input type="number" class="form-control" id="minutes-in-long-break" />
-      </div>
-
-      <div class="checkbox">
-        <label>
-          <input type="checkbox" id="notification-sound-checkbox" />
-          Notification sound
-        </label>
-      </div>
-
-      <div class="checkbox">
-        <label>
-          <input type="checkbox" id="toolbar-badge-checkbox" />
-          Toolbar minute display
-        </label>
-      </div>
-
-      <button type="submit" class="btn btn-primary">Save</button>
-    </form>
-
-    <hr />
-
-    <div>
-      <button class="btn btn-xs btn-warning" id="reset-options">
-        Reset to default
-      </button>
+<body>
+<form id="options-form">
+  <div class="form-group">
+    <label class="control-label">
+      Duration in Tomato
+    </label>
+    <div class="form-group row">
+      <label for="hours-in-tomato" class="control-label col-sm-2">
+        Hours
+      </label>
+      <input type="number" class="form-control col-sm-2" id="hours-in-tomato" min="0" max="99"/>
+      <label for="minutes-in-tomato" class="control-label col-sm-2">
+        Minutes
+      </label>
+      <input type="number" class="form-control col-sm-2" id="minutes-in-tomato" min="0" max="60"/>
+      <label for="seconds-in-tomato" class="control-label col-sm-2">
+        Seconds
+      </label>
+      <input type="number" class="form-control col-sm-2" id="seconds-in-tomato" min="0" max="60"/>
     </div>
-  </body>
+  </div>
+  <div class="form-group">
+    <label class="control-label">
+      Duration in Short Break
+    </label>
+    <div class="form-group row">
+      <label for="hours-in-short-break" class="control-label col-sm-2">
+        Hours
+      </label>
+      <input type="number" class="form-control col-sm-2" id="hours-in-short-break" min="0" max="99"/>
+      <label for="minutes-in-short-break" class="control-label col-sm-2">
+        Minutes
+      </label>
+      <input type="number" class="form-control col-sm-2" id="minutes-in-short-break" min="0" max="60"/>
+      <label for="seconds-in-short-break" class="control-label col-sm-2">
+        Seconds
+      </label>
+      <input type="number" class="form-control col-sm-2" id="seconds-in-short-break" min="0" max="60"/>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label">
+      Duration in Long Break
+    </label>
+    <div class="form-group row">
+      <label for="hours-in-long-break" class="control-label col-sm-2">
+        Hours
+      </label>
+      <input type="number" class="form-control col-sm-2" id="hours-in-long-break" min="0" max="99"/>
+      <label for="minutes-in-long-break" class="control-label col-sm-2">
+        Minutes
+      </label>
+      <input type="number" class="form-control col-sm-2" id="minutes-in-long-break" min="0" max="60"/>
+      <label for="seconds-in-long-break" class="control-label col-sm-2">
+        Seconds
+      </label>
+      <input type="number" class="form-control col-sm-2" id="seconds-in-long-break" min="0" max="60"/>
+    </div>
+  </div>
+
+  <div class="checkbox">
+    <label>
+      <input type="checkbox" id="notification-sound-checkbox" />
+      Notification sound
+    </label>
+  </div>
+
+  <div class="checkbox">
+    <label>
+      <input type="checkbox" id="toolbar-badge-checkbox" />
+      Toolbar minute display
+    </label>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Save</button>
+</form>
+
+<hr />
+
+<div>
+  <button class="btn btn-xs btn-warning" id="reset-options">
+    Reset to default
+  </button>
+</div>
+</body>
 </html>

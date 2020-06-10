@@ -3,10 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="26f33090-b131-4ec8-8863-60d5a262c024" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/options/options.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/options/options.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/options/options.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/options/options.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/constants.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/constants.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/utils.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/utils.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/panel/panel.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/panel/panel.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,7 +54,7 @@
       <workItem from="1591254418474" duration="2520000" />
       <workItem from="1591261786626" duration="870000" />
       <workItem from="1591373963579" duration="5717000" />
-      <workItem from="1591423328993" duration="899000" />
+      <workItem from="1591423328993" duration="1509000" />
     </task>
     <servers />
   </component>

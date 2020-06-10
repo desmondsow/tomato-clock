@@ -1,3 +1,6 @@
+import 'bootstrap';
+import $ from 'jquery'
+
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./options.css";
 
@@ -24,7 +27,7 @@ export default class Options {
     this.domNotificationSoundCheckbox = document.getElementById("notification-sound-checkbox");
     this.domToolbarBadgeCheckbox = document.getElementById("toolbar-badge-checkbox");
 
-
+    $("#break-duration-alert").hide();
     this.setOptionsOnPage();
     this.setEventListeners();
   }
@@ -81,14 +84,18 @@ export default class Options {
     const millisecondsInShortBreak = getHoursAndMinutesAndSecondsToMilliseconds(hoursInShortBreak, minutesInShortBreak, secondsInShortBreak);
     const millisecondsInLongBreak = getHoursAndMinutesAndSecondsToMilliseconds(hoursInLongBreak, minutesInLongBreak, secondsInLongBreak);
 
-
-    this.settings.saveSettings({
-      [SETTINGS_KEY.MILLISECONDS_IN_TOMATO]: millisecondsInTomato,
-      [SETTINGS_KEY.MILLISECONDS_IN_SHORT_BREAK]: millisecondsInShortBreak,
-      [SETTINGS_KEY.MILLISECONDS_IN_LONG_BREAK]: millisecondsInLongBreak,
-      [SETTINGS_KEY.IS_NOTIFICATION_SOUND_ENABLED]: isNotificationSoundEnabled,
-      [SETTINGS_KEY.IS_TOOLBAR_BADGE_ENABLED]: isToolbarBadgeEnabled,
-    });
+    if (millisecondsInShortBreak < millisecondsInLongBreak) {
+      $("#break-duration-alert").hide();
+      this.settings.saveSettings({
+        [SETTINGS_KEY.MILLISECONDS_IN_TOMATO]: millisecondsInTomato,
+        [SETTINGS_KEY.MILLISECONDS_IN_SHORT_BREAK]: millisecondsInShortBreak,
+        [SETTINGS_KEY.MILLISECONDS_IN_LONG_BREAK]: millisecondsInLongBreak,
+        [SETTINGS_KEY.IS_NOTIFICATION_SOUND_ENABLED]: isNotificationSoundEnabled,
+        [SETTINGS_KEY.IS_TOOLBAR_BADGE_ENABLED]: isToolbarBadgeEnabled,
+      });
+    } else {
+      $("#break-duration-alert").show();
+    }
   }
 
   setEventListeners() {
